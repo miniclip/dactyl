@@ -139,12 +139,8 @@ make (#dactyl_template{segs=Segs}=Template,<<$~,Binary/binary>>,TS) ->
             end
     end;
 make (#dactyl_template{segs=Segs}=Template,Binary,TS) ->
-    case literal(Binary,[]) of
-        {ok,S,Rest} ->
-            make(Template#dactyl_template{segs=[{literal,[S]}|Segs]},Rest,TS);
-        Else ->
-            Else
-    end.
+    {ok,S,Rest} = literal(Binary,[]),
+    make(Template#dactyl_template{segs=[{literal,[S]}|Segs]},Rest,TS).
 
 %% extract a literal from a template binary
 literal (<<$~,$~,Rest/binary>>,S) ->
@@ -155,10 +151,8 @@ literal (<<$~,$~,Rest/binary>>,S) ->
 literal (<<$~,_/binary>>=Rest,S) ->
     {ok,S,Rest};
 literal (<<C,Rest/binary>>,S) ->
-    case literal(Rest,S) of
-        {ok,S2,Binary} -> {ok,[C|S2],Binary};
-        Else -> Else
-    end;
+    {ok,S2,Binary} = literal(Rest,S),
+    {ok,[C|S2],Binary};
 literal (<<>>,S) ->
     {ok,S,<<>>}.
 
