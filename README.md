@@ -28,7 +28,7 @@ debug if there is a problem.
 Simple example:
 
 ```erlang
-1> dactyl:render("~name~;",[{name,"Jeff"}]).
+1> dactyl:render("~name~;", [{name, "Jeff"}]).
 "Jeff"
 ```
 
@@ -40,9 +40,9 @@ You can also choose to pre-compile the template and then render it multiple
 times using different parameter value proplists:
 
 ```erlang
-2> {ok,Template}=dactyl:compile("~name~;").
+2> {ok,Template} = dactyl:compile("~name~;").
 {ok, ...}
-3> dactyl:render(Template,[{name,"Bob"}]).
+3> dactyl:render(Template, [{name, "Bob"}]).
 "Bob"
 ```
 
@@ -50,7 +50,7 @@ Dactyl is also capable of compiling files as templates, which can then be used
 like any other template:
 
 ```erlang
-4> {ok,Home}=dactyl:compile_file("home.html").
+4> {ok,Home} = dactyl:compile_file("home.html").
 {ok, ...}
 ```
 
@@ -125,7 +125,7 @@ function, you can then treat the template as the `Format` parameter to
 
 ```erlang
 10> dactyl:render("Value = ~foo~{~p~}", [{foo, [{a, b, c}]}]).
-"Value={a,b,c}"
+"Value = {a,b,c}"
 ```
 
 ## Exploding parameters with functions
