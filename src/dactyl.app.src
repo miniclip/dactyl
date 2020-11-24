@@ -1,6 +1,6 @@
 {application, dactyl, [
     {description, "String templating library for Erlang"},
     {vsn, git},
-    %{mod, dactyl_app, []}},
+    {mod, dactyl_app, []}},
     {applications, [kernel, stdlib]}
 ]}.
