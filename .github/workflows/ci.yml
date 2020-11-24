@@ -1,5 +1,5 @@
 ---
-name: CI for dactyl (make sure a potential release is possible)
+name: CI for dactyl
 on:
   pull_request:
     branches:
