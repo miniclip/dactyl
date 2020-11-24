@@ -11,13 +11,13 @@
 %% application Function Exports
 %% ------------------------------------------------------------------
 
--export([render_file/2]).
--export([render_file/3]).
+-export([compile/1]).
+-export([compile_file/1]).
+-export([new_template/1]).
 -export([render/2]).
 -export([render/3]).
--export([compile_file/1]).
--export([compile/1]).
--export([new_template/1]).
+-export([render_file/2]).
+-export([render_file/3]).
 
 %% ------------------------------------------------------------------
 %% Record and Type Definitions
@@ -50,32 +50,21 @@
 %% API Function Definitions
 %% ------------------------------------------------------------------
 
+%% build a #dactyl_template{} from a source string or binary
+compile (String) when is_list(String) ->
+    compile(list_to_binary(String));
+compile (Binary) when is_binary(Binary) ->
+    make(#dactyl_template{},Binary,[]).
+
+%% build a #dactyl_template{} from a source file
+compile_file (Filename) ->
+    case file:read_file(Filename) of
+        {ok,Binary} -> compile(Binary);
+        Else -> Else
+    end.
+
 new_template(Segs) ->
     #dactyl_template{ segs = Segs }.
-
-%% simple helper function...
-f (Fmt,Args) ->
-    lists:flatten(io_lib:format(Fmt,Args)).
-
-%% how we convert various types to a string
-to_s (X) when is_list(X) -> X;
-to_s (X) when is_binary(X) -> binary_to_list(X);
-to_s (X) when is_atom(X) -> atom_to_list(X);
-to_s (X) -> f("~p",[X]).
-
-%% compile a source file, build a template, then render it
-render_file (Filename,Args) ->
-    case compile_file(Filename) of
-        {ok,Template} -> render(Template,Args);
-        Else -> Else
-    end.
-
-%% compile a source file, build a template, then render it with callbacks
-render_file (Mod,Filename,Args) ->
-    case compile_file(Filename) of
-        {ok,Template} -> render(Mod,Template,Args);
-        Else -> Else
-    end.
 
 %% render from a template
 render (#dactyl_template{segs=Segs},Args) ->
@@ -102,6 +91,34 @@ render (Mod,Binary,Args) when is_binary(Binary) ->
         {ok,Template} -> render(Mod,Template,Args);
         Else -> Else
     end.
+
+%% compile a source file, build a template, then render it
+render_file (Filename,Args) ->
+    case compile_file(Filename) of
+        {ok,Template} -> render(Template,Args);
+        Else -> Else
+    end.
+
+%% compile a source file, build a template, then render it with callbacks
+render_file (Mod,Filename,Args) ->
+    case compile_file(Filename) of
+        {ok,Template} -> render(Mod,Template,Args);
+        Else -> Else
+    end.
+
+%% ------------------------------------------------------------------
+%% Internal Function Definitions
+%% ------------------------------------------------------------------
+
+%% simple helper function...
+f (Fmt,Args) ->
+    lists:flatten(io_lib:format(Fmt,Args)).
+
+%% how we convert various types to a string
+to_s (X) when is_list(X) -> X;
+to_s (X) when is_binary(X) -> binary_to_list(X);
+to_s (X) when is_atom(X) -> atom_to_list(X);
+to_s (X) -> f("~p",[X]).
 
 %% converts a template operation into a string given a proplist of args
 explode ({literal,[String]},_Args) ->
@@ -132,18 +149,6 @@ lookup (Param,{Mod,Args}) ->
 lookup (Param,Args) ->
     proplists:get_value(Param,Args).
 
-%% build a #dactyl_template{} from a source file
-compile_file (Filename) ->
-    case file:read_file(Filename) of
-        {ok,Binary} -> compile(Binary);
-        Else -> Else
-    end.
-
-%% build a #dactyl_template{} from a source string or binary
-compile (String) when is_list(String) ->
-    compile(list_to_binary(String));
-compile (Binary) when is_binary(Binary) ->
-    make(#dactyl_template{},Binary,[]).
 
 %% construct a new template from a binary string
 make (#dactyl_template{segs=Segs}=Template,<<>>,[]) ->
