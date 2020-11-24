@@ -12,32 +12,32 @@ upgrade: upgrade-rebar3_lint
 .PHONY: upgrade
 
 upgrade-rebar3_lint:
-	rebar3 plugins upgrade rebar3_lint
+	@rebar3 plugins upgrade rebar3_lint
 .PHONY: upgrade-rebar3_lint
 
 clean:
-	rebar3 clean -a
+	@rebar3 clean -a
 .PHONY: clean
 
 compile:
-	rebar3 compile
+	@rebar3 compile
 .PHONY: compile
 
 check: xref dialyzer elvis-rock
 .PHONY: check
 
 xref:
-	rebar3 xref
+	@rebar3 xref
 .PHONY: xref
 
 dialyzer:
-	rebar3 dialyzer
+	@rebar3 dialyzer
 .PHONY: dialyzer
 
 elvis-rock:
-	rebar3 lint
+	@rebar3 lint
 .PHONY: elvis-rock
 
 edoc:
-	rebar3 edoc
+	@rebar3 edoc
 .PHONY: edoc
