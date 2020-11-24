@@ -22,11 +22,37 @@
          render/2,
          render/3,
          compile_file/1,
-         compile/1
+         compile/1,
+         new_template/1
         ]).
 
-%% #dactyl_template[} record and types
--include("../include/dactyl.hrl").
+%% Valid operations:
+%%  literal    - The argument should be inserted verbatim
+%%  basic      - A simple substitution
+
+-type operation() :: atom().
+-export_type([operation/0]).
+
+-type arg() :: any().
+-export_type([arg/0]).
+-type args() :: [arg()].
+-export_type([args/0]).
+-type segment() :: {operation(),args()}.
+-export_type([segment/0]).
+
+%% A #dactyl_template{} is a list of segments. Each segment is an operation
+%% to create the output binary string. Most of the time, this will simply
+%% be a {literal,[String]} command. The segments are in reverse order so
+%% that building the final output string is done backwards, and quicker.
+
+-record(dactyl_template,
+        {segs = [] :: [segment()]
+        }).
+-type dactyl_template() :: #dactyl_template{}.
+-export_type([dactyl_template/0]).
+
+new_template(Segs) ->
+    #dactyl_template{ segs = Segs }.
 
 %% simple helper function...
 f (Fmt,Args) ->
