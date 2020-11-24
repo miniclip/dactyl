@@ -19,6 +19,14 @@
 -export([render_file/2]).
 -export([render_file/3]).
 
+-ignore_xref(compile/1).
+-ignore_xref(compile_file/1).
+-ignore_xref(new_template/1).
+-ignore_xref(render/2).
+-ignore_xref(render/3).
+-ignore_xref(render_file/2).
+-ignore_xref(render_file/3).
+
 %% ------------------------------------------------------------------
 %% Record and Type Definitions
 %% ------------------------------------------------------------------
