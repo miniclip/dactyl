@@ -1,5 +1,13 @@
 # Dactyl
 
+[![build][build badge]][build status]
+[![erlang][erlang badge]][erlang downloads]
+
+[build badge]: https://github.com/miniclip/dactyl/workflows/CI+for+dactyl/badge.svg
+[build status]: https://github.com/miniclip/dactyl/actions?query=branch%3Amaster+workflow%3A"CI+for+dactyl"
+[erlang badge]: https://img.shields.io/badge/erlang-%3E%3D19.3-lightgrey
+[erlang downloads]: http://www.erlang.org/download
+
 Dactyl is a simple string templating library for Erlang. It's not especially
 fast, but does have quite a bit of power. With Dactyl you can perform basic
 (named) parameter expansion, as well as conditional expansion, list expansion,
