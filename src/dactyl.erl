@@ -50,27 +50,28 @@
 %% API Function Definitions
 %% ------------------------------------------------------------------
 
-%% build a #dactyl_template{} from a source string or binary
+%% @doc build a #dactyl_template{} from a source string or binary
 compile (String) when is_list(String) ->
     compile(list_to_binary(String));
 compile (Binary) when is_binary(Binary) ->
     make(#dactyl_template{},Binary,[]).
 
-%% build a #dactyl_template{} from a source file
+%% @doc build a #dactyl_template{} from a source file
 compile_file (Filename) ->
     case file:read_file(Filename) of
         {ok,Binary} -> compile(Binary);
         Else -> Else
     end.
 
+%% @doc Build an internal representation of a dactyl template
 new_template(Segs) ->
     #dactyl_template{ segs = Segs }.
 
-%% render from a template
+%% @doc render from a template
 render (#dactyl_template{segs=Segs},Args) ->
     lists:flatten(lists:map(fun (Op) -> explode(Op,Args) end,Segs));
 
-%% compile the source, build a template, then render it
+%% @doc compile the source, build a template, then render it
 render (String,Args) when is_list(String) ->
     render(list_to_binary(String),Args);
 render (Binary,Args) when is_binary(Binary) ->
@@ -79,11 +80,11 @@ render (Binary,Args) when is_binary(Binary) ->
         Else -> Else
     end.
 
-%% render from a template using module callbacks
+%% @doc render from a template using module callbacks
 render (Mod,#dactyl_template{segs=Segs},Args) ->
     lists:flatten(lists:map(fun (Op) -> explode(Op,{Mod,Args}) end,Segs));
 
-%% render with module callbacks
+%% @doc render with module callbacks
 render (Mod,String,Args) when is_list(String) ->
     render(Mod,list_to_binary(String),Args);
 render (Mod,Binary,Args) when is_binary(Binary) ->
@@ -92,14 +93,14 @@ render (Mod,Binary,Args) when is_binary(Binary) ->
         Else -> Else
     end.
 
-%% compile a source file, build a template, then render it
+%% @doc compile a source file, build a template, then render it
 render_file (Filename,Args) ->
     case compile_file(Filename) of
         {ok,Template} -> render(Template,Args);
         Else -> Else
     end.
 
-%% compile a source file, build a template, then render it with callbacks
+%% @doc compile a source file, build a template, then render it with callbacks
 render_file (Mod,Filename,Args) ->
     case compile_file(Filename) of
         {ok,Template} -> render(Mod,Template,Args);
@@ -110,17 +111,14 @@ render_file (Mod,Filename,Args) ->
 %% Internal Function Definitions
 %% ------------------------------------------------------------------
 
-%% simple helper function...
 f (Fmt,Args) ->
     lists:flatten(io_lib:format(Fmt,Args)).
 
-%% how we convert various types to a string
 to_s (X) when is_list(X) -> X;
 to_s (X) when is_binary(X) -> binary_to_list(X);
 to_s (X) when is_atom(X) -> atom_to_list(X);
 to_s (X) -> f("~p",[X]).
 
-%% converts a template operation into a string given a proplist of args
 explode ({literal,[String]},_Args) ->
     to_s(String);
 explode ({basic,[Param]},Args) ->
@@ -140,7 +138,6 @@ explode ({format,[Param,Fmt]},Args) ->
     List=lookup(Param,Args),
     io_lib:format(Fmt,List).
 
-%% given a parameter, modules, and arglist, call a function or lookup in list
 lookup (Param,{Mod,Args}) ->
     case lists:member({Param,1},Mod:module_info(exports)) of
         false -> lookup(Param,Args);
@@ -150,7 +147,6 @@ lookup (Param,Args) ->
     proplists:get_value(Param,Args).
 
 
-%% construct a new template from a binary string
 make (#dactyl_template{segs=Segs}=Template,<<>>,[]) ->
     {ok,Template#dactyl_template{segs=lists:reverse(Segs)}};
 make (_,<<>>,_) ->
@@ -172,7 +168,6 @@ make (#dactyl_template{segs=Segs}=Template,Binary,TS) ->
     {ok,S,Rest} = literal(Binary,[]),
     make(Template#dactyl_template{segs=[{literal,[S]}|Segs]},Rest,TS).
 
-%% extract a literal from a template binary
 literal (<<$~,$~,Rest/binary>>,S) ->
     case literal(Rest,S) of
         {ok,S,Binary} -> {ok,[$~|S],Binary};
@@ -186,7 +181,6 @@ literal (<<C,Rest/binary>>,S) ->
 literal (<<>>,S) ->
     {ok,S,<<>>}.
 
-%% extract a formatted operation from a template binary
 format (Binary) ->
     case scan(Binary) of
         {ok,Param,Term,Rest} ->
@@ -197,7 +191,6 @@ format (Binary) ->
         Else -> Else
     end.
 
-%% scan a binary looking for a terminal
 scan (<<>>) ->
     {error,unexpected_end_of_template};
 scan (<<$~,$~,Rest/binary>>) ->
@@ -213,18 +206,15 @@ scan (<<C,Rest/binary>>) ->
         Else -> Else
     end.
 
-%% fetch the operation for a given terminal type
 term_op ($;) -> {ok,fun basic/2};
 term_op ($?) -> {ok,fun either/2};
 term_op ($[) -> {ok,fun list/2};
 term_op (${) -> {ok,fun format/2};
 term_op (Op) -> {error,{invalid_term_op,Op}}.
 
-%% basic substitution
 basic (Param,Rest) ->
     {ok,basic,[Param],Rest}.
 
-%% conditional evaluation
 either (Param,Binary) ->
     case make(#dactyl_template{},Binary,[$:,$;]) of
         {ok,$;,True,Rest} ->
@@ -240,14 +230,12 @@ either (Param,Binary) ->
             Else
     end.
 
-%% list evaluation
 list (Param,Binary) ->
     case make(#dactyl_template{},Binary,[$]]) of
         {ok,_,Template,Rest} -> {ok,list,[Param,Template],Rest};
         Else -> Else
     end.
 
-%% custom formatting
 format (Param,Binary) ->
     case scan(Binary) of
         {ok,S,$},Rest} ->

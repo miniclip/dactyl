@@ -1,3 +1,4 @@
+%% @hidden
 -module(dactyl_app).
 -behaviour(application).
 

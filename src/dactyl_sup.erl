@@ -1,3 +1,4 @@
+%% @hidden
 -module(dactyl_sup).
 -behaviour(supervisor).
 
