@@ -51,7 +51,7 @@
 -record(dactyl_template,
         {segs = [] :: [segment()]
         }).
--type dactyl_template() :: #dactyl_template{}.
+-opaque dactyl_template() :: #dactyl_template{}.
 -export_type([dactyl_template/0]).
 
 %% ------------------------------------------------------------------
