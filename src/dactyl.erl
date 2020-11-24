@@ -7,23 +7,28 @@
 
 -module(dactyl).
 
-%% public api
--export([f/2,
-         to_s/1,
-         render_file/2,
-         render_file/3,
-         render/2,
-         render/3,
-         compile_file/1,
-         compile/1,
-         new_template/1
-        ]).
+%% ------------------------------------------------------------------
+%% application Function Exports
+%% ------------------------------------------------------------------
+
+-export([f/2]).
+-export([to_s/1]).
+-export([render_file/2]).
+-export([render_file/3]).
+-export([render/2]).
+-export([render/3]).
+-export([compile_file/1]).
+-export([compile/1]).
+-export([new_template/1]).
+
+%% ------------------------------------------------------------------
+%% Record and Type Definitions
+%% ------------------------------------------------------------------
 
 %% Valid operations:
-%%  literal    - The argument should be inserted verbatim
-%%  basic      - A simple substitution
-
--type operation() :: atom().
+%% - literal: the argument should be inserted verbatim
+%% - basic: a simple substitution
+-type operation() :: literal | basic.
 -export_type([operation/0]).
 
 -type arg() :: any().
@@ -37,12 +42,15 @@
 %% to create the output binary string. Most of the time, this will simply
 %% be a {literal,[String]} command. The segments are in reverse order so
 %% that building the final output string is done backwards, and quicker.
-
 -record(dactyl_template,
         {segs = [] :: [segment()]
         }).
 -type dactyl_template() :: #dactyl_template{}.
 -export_type([dactyl_template/0]).
+
+%% ------------------------------------------------------------------
+%% API Function Definitions
+%% ------------------------------------------------------------------
 
 new_template(Segs) ->
     #dactyl_template{ segs = Segs }.
