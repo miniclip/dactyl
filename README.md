@@ -1,10 +1,8 @@
 # Dactyl
 
-[![build][build badge]][build status]
+![CI for dactyl](https://github.com/miniclip/dactyl/workflows/CI%20for%20dactyl/badge.svg)
 [![erlang][erlang badge]][erlang downloads]
 
-[build badge]: https://github.com/miniclip/dactyl/workflows/CI+for+dactyl/badge.svg
-[build status]: https://github.com/miniclip/dactyl/actions?query=branch%3Amaster+workflow%3A"CI+for+dactyl"
 [erlang badge]: https://img.shields.io/badge/erlang-%3E%3D19.3-lightgrey
 [erlang downloads]: http://www.erlang.org/download
 
