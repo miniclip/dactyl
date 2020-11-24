@@ -11,8 +11,6 @@
 %% application Function Exports
 %% ------------------------------------------------------------------
 
--export([f/2]).
--export([to_s/1]).
 -export([render_file/2]).
 -export([render_file/3]).
 -export([render/2]).
