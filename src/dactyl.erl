@@ -1,16 +1,9 @@
-%% -*- erlang -*-
-%%
-%% String templating library for Erlang
-%%
 %% Copyright (c) 2012 by Jeffrey Massung
 %% All rights reserved
 %%
 %% No warranties explicit or implied. Use as you see fit for any projects
 %% what-so-ever, but please give credit where due and leave this header
 %% intact.
-%%
-%% dactyl.erl
-%%
 
 -module(dactyl).
 
