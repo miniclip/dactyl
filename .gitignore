@@ -1,4 +1,5 @@
-_build/
-deps/
-ebin/
-log/
+.rebar3
+_build
+erl_crash.dump
+logs
+rebar3.crashdump
