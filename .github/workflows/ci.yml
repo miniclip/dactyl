@@ -1,6 +1,9 @@
 ---
 name: CI for dactyl
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -14,5 +17,4 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
-      - name: version
-        run: make version
+      - run: make version
