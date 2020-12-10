@@ -1,6 +1,6 @@
 # Dactyl
 
-![CI for dactyl](https://github.com/miniclip/dactyl/workflows/CI%20for%20dactyl/badge.svg)
+![build](https://github.com/miniclip/dactyl/workflows/build/badge.svg)
 [![erlang][erlang badge]][erlang downloads]
 
 [erlang badge]: https://img.shields.io/badge/erlang-%3E%3D19.3-lightgrey
