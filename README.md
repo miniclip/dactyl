@@ -1,10 +1,7 @@
-# Dactyl
+# dactyl [![GitHub Actions CI][ci-img]][ci]
 
-![build](https://github.com/miniclip/dactyl/workflows/build/badge.svg)
-[![erlang][erlang badge]][erlang downloads]
-
-[erlang badge]: https://img.shields.io/badge/erlang-%3E%3D19.3-lightgrey
-[erlang downloads]: http://www.erlang.org/download
+[ci]: https://github.com/miniclip/dactyl
+[ci-img]: https://github.com/miniclip/dactyl/workflows/build/badge.svg
 
 Dactyl is a simple string templating library for Erlang. It's not especially
 fast, but does have quite a bit of power. With Dactyl you can perform basic

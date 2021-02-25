@@ -1,6 +1,14 @@
 {application, dactyl, [
     {description, "String templating library for Erlang"},
     {vsn, git},
-    {mod, dactyl_app, []},
-    {applications, [kernel, stdlib]}
+    {registered, []},
+
+    {applications, [
+        % OTP dependencies
+        kernel,
+        stdlib
+        % External dependencies
+    ]},
+
+    {env, []}
 ]}.
